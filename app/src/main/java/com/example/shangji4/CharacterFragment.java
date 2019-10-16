@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import java.util.UUID;
 
 public class CharacterFragment extends Fragment {
+    public static final String ARG_CRIME_ID = "crime-id";
     private TextView title;
     private TextView name;
     private ImageView picture;
@@ -30,7 +31,9 @@ public class CharacterFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
-        UUID id = (UUID)getActivity().getIntent().getSerializableExtra(CharacterListActivity.IntentID);
+//        UUID id = (UUID)getActivity().getIntent().getSerializableExtra(CharacterListActivity.IntentID);
+        //上面的那一句再上机五中被改为如下方法
+        UUID id = (UUID)getArguments().getSerializable(ARG_CRIME_ID);
         mCharacter = CharacterLab.get(getActivity()).getCharacter(id);
     }
 
@@ -41,5 +44,14 @@ public class CharacterFragment extends Fragment {
         name.setText(mCharacter.getmNickName());
         picture.setImageResource(mCharacter.getmProgramPicId());
         jiemu.setText(mCharacter.getmProgramName());
+    }
+
+    //上机五新加
+    public static CharacterFragment newInstance(UUID CharacterId){
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ARG_CRIME_ID, CharacterId);
+        CharacterFragment characterFragment = new CharacterFragment();
+        characterFragment.setArguments(bundle);
+        return characterFragment;
     }
 }

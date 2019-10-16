@@ -29,8 +29,18 @@ public class CharacterListFragment extends Fragment {
     private void updateUI(){
         CharacterLab characterLab = CharacterLab.get(getActivity());
         List<Character> characters = characterLab.getmCharacters();
-        mAdapter = new CharacterAdapter(characters);
-        mCharacterRecyclerView.setAdapter(mAdapter);
+        //返回时的一些操作
+        if(mAdapter == null) {
+            mAdapter = new CharacterAdapter(characters);
+            mCharacterRecyclerView.setAdapter(mAdapter);
+        }else{
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+    @Override
+    public void onResume(){
+        super.onResume();
+        updateUI();
     }
 
 
@@ -65,7 +75,8 @@ public class CharacterListFragment extends Fragment {
         @Override
         public void onClick(View v){
             //这里跳转到新的继承方法
-            Intent intent = CharacterListActivity.newIntent(getActivity(), mCharacter.getmId());
+//            Intent intent = CharacterListActivity.newIntent(getActivity(), mCharacter.getmId());
+            Intent intent = CharacterPagerActivity.newIntent(getActivity(), mCharacter.getmId());
             startActivity(intent);
         }
 
